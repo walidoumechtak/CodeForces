@@ -102,7 +102,7 @@ int game2(Games &game, int turn, int len) {
     vector<int> players_cords;
     vector<vector<int>> cords;
 
-    cerr << "game2 state: " << turn << " len: " << len << endl;
+    // cerr << "game2 state: " << turn << " len: " << len << endl;
     // if (turn < (len / 3))
     //     return -1;
 
@@ -157,33 +157,37 @@ int game2(Games &game, int turn, int len) {
     int res;
     int absX;
     int absY;
+    cerr << "x: " << x << " y: " << y << endl;
     if (x > 0 &&  y > 0)
-        res = (x > y) ? 4 : 3;
+        res = (x > y) ? 4 : 1;
     else if (x < 0 && y < 0)
     {
         absX = abs(x);
         absY = abs(y);
 
-        res = (absX > absY) ? 2 : 1;
+        res = (absX > absY) ? 2 : 3;
     }
     else if (x > 0 && y < 0)
     {
         absY = abs(y);
-        res = (x > absY) ? 4 : 1;
+        res = (x > absY) ? 4 : 3;
     }
     else if (x < 0 && y > 0)
     {
         absX = abs(x);
-        res = (absX > y) ? 2 : 3;
+        res = (absX > y) ? 2 : 1;
     }
     else 
         res = -1;
     return res; 
 }
 
-int game2_state(Games game) {
+int game2_state(Games game, int turn) {
     
-    if (game.my_dis > game.dis1 && game.my_dis > game.dis2)
+    cerr << "the distance is : " << game.my_dis << endl;
+    cerr << "==>> " << game.gpu.at(0) << endl;
+    // if (game.my_dis > game.dis1 && game.my_dis > game.dis2 && (game.my_dis) > 10 || game.gpu.at(0) > 5)
+    if (game.my_dis > 10 || game.gpu.at(0) - '0' > 5)
         return 0;
     else
         return 1;
@@ -250,6 +254,12 @@ int main()
     int nb_games;
     cin >> nb_games; cin.ignore();
     int game2_turn = 0;
+    vector<string> string_actions;
+
+    string_actions.push_back("UP");
+    string_actions.push_back("RIGHT");
+    string_actions.push_back("DOWN");
+    string_actions.push_back("LEFT");
 
     vector<Games> our_games;
     int game1_res;
@@ -257,7 +267,7 @@ int main()
     int game3_res;
     int game4_res;
     int turn = 0;
-    int game1_state,game2_state,game3_state,game4_state;
+    int game1_s,game2_s,game3_s,game4_s;
 
 
     map<int, int> freqs;
@@ -292,13 +302,13 @@ int main()
         if (our_games.at(1).gpu.length() <= 0)
             game2_turn = 0;
         actions.push_back(game1(our_games.at(0)));
-        cerr << "after game 1" << endl;
+        // cerr << "after game 1" << endl;
         actions.push_back(game2(our_games.at(1), game2_turn, lenOfGame2));
-        cerr << "after game 2" << endl;
+        // cerr << "after game 2" << endl;
         actions.push_back(game3(our_games.at(2)));
-        cerr << "after game 3" << endl;
+        // cerr << "after game 3" << endl;
         actions.push_back(game4(our_games.at(3), turn));
-        cerr << "after game 4" << endl;
+        // cerr << "after game 4" << endl;
         
         // remove unnecessary actions ( -1 )
         removeUnecessaryActions(actions);
@@ -321,19 +331,27 @@ int main()
             }
         }
 
-
-
-        // take the action ..............................................................
-        if (toDo == 1)
-            cout << "UP" << endl;
-        else if (toDo == 2)
-            cout << "RIGHT" << endl;
-        else if (toDo == 3)
-            cout << "DOWN" << endl;
-        else
-            cout << "LEFT" << endl;
-
         // analyse the states of the games.
+        
+        game2_s = game2_state(our_games.at(1), game2_turn);
+        if (game2_s == 0 && actions.at(1) != -1)
+        {
+            cerr << "--> " << string_actions.at(actions.at(1) - 1) << endl;
+            cout << string_actions.at(actions.at(1) - 1) << endl;
+        }
+        else
+        {
+            // take the action ..............................................................
+            if (toDo == 1)
+                cout << "UP" << endl;
+            else if (toDo == 2)
+                cout << "RIGHT" << endl;
+            else if (toDo == 3)
+                cout << "DOWN" << endl;
+            else
+                cout << "LEFT" << endl;
+        }
+
         
         // increment turn.
         turn++;
