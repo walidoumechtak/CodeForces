@@ -82,8 +82,8 @@ int game1(Games game) {
         // else
         //     break;
     }
-    cerr << "the path: " << game.gpu << endl;
-    cerr << "free space: " << free_space << endl;
+    // cerr << "the path: " << game.gpu << endl;
+    // cerr << "free space: " << free_space << endl;
     if (free_space == 0)
         return 1; // TOP
     else if (free_space == 1)
@@ -230,11 +230,12 @@ int game4(Games game, int turn) {
     string gpu = game.gpu;
     // for (int i = 0; i < gpu.length(); i++)
     // {
-        if (gpu.at(turn) == 'U')
+        cerr << "mini-action: " << gpu.at(turn) << " the turn is " << endl;
+        if (gpu.at(0) == 'U')
             return 1;
-        else if (gpu.at(turn) == 'R')
+        else if (gpu.at(0) == 'R')
             return 2;
-        else if (gpu.at(turn) == 'D')
+        else if (gpu.at(0) == 'D')
             return 3;
         else
             return 4;
@@ -334,9 +335,14 @@ int main()
         // analyse the states of the games.
         
         game2_s = game2_state(our_games.at(1), game2_turn);
-        if (game2_s == 0 && actions.at(1) != -1)
+        if (true)
         {
-            cerr << "--> " << string_actions.at(actions.at(1) - 1) << endl;
+            cout << string_actions.at(actions.at(3) - 1) << endl;
+            cerr << "game 4 action: " << string_actions.at(actions.at(3) - 1) << endl;
+        }
+        else if (game2_s == 0 && actions.at(1) != -1)
+        {
+            // cerr << "--> " << string_actions.at(actions.at(1) - 1) << endl;
             cout << string_actions.at(actions.at(1) - 1) << endl;
         }
         else
